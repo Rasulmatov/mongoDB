@@ -1,4 +1,4 @@
-package uz.universes.mongodb;
+package uz.universes.mongodb.model;
 
 import lombok.Getter;
 import lombok.Setter;
