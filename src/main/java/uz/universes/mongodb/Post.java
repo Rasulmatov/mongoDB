@@ -1,26 +1,22 @@
 package uz.universes.mongodb;
 
 import lombok.*;
-import org.bson.Document;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document("posts")
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-@ToString(exclude = {"title","body"})
 @Builder
+@ToString
 public class Post {
-    private Object objectId;
-    private Integer id;
-    private Integer userId;
+    @Id
+    private String postId;
     private String title;
     private String body;
-
-    public Post(Document document) {
-        this.objectId = document.getObjectId("_id");
-        this.id = document.getInteger("id");
-        this.userId = document.getInteger("userId");
-        this.title = document.getString("title");
-        this.body = document.getString("body");
-    }
+    private Integer userId;
+    private Integer id;
 }
+
+
