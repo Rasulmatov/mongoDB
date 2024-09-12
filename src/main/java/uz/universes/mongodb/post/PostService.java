@@ -9,4 +9,5 @@ public interface PostService {
     PostDto getPost(@NonNull Integer id);
     PostDto createPost(@NonNull PostCreateDto createDto);
     Void createComment(@NonNull List<CommentCreateDTO> commentDto);
+    List<Post> getAllPost();
 }
