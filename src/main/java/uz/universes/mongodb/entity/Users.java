@@ -1,4 +1,4 @@
-package uz.universes.mongodb.post;
+package uz.universes.mongodb.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,11 +13,12 @@ import lombok.*;
 @Builder
 @ToString
 @Entity
-public class Post {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String title;
-    private String body;
-
+    private String email;
+    private String userName;
+    private String password;
+    private String otp;
 }
