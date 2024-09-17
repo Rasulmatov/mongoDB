@@ -8,6 +8,9 @@ import uz.universes.mongodb.dto.PostCreateDto;
 import uz.universes.mongodb.entity.Post;
 import uz.universes.mongodb.service.PostService;
 
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -30,8 +33,12 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
     @PatchMapping()
-    public ResponseEntity<Void> deletPostId(@RequestBody UpdatePostDTO dto) {
-        postService.updatePost(dto);
-       return ResponseEntity.noContent().build();
+    public ResponseEntity<Post> deletPostId(@RequestBody UpdatePostDTO dto) {
+       return ResponseEntity.ok(postService.updatePost(dto));
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Post>> getAll() {
+       return ResponseEntity.ok(postService.getAll());
     }
 }

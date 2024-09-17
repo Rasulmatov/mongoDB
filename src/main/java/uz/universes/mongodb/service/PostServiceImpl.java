@@ -3,25 +3,24 @@ package uz.universes.mongodb.service;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uz.universes.mongodb.dto.UpdatePostDTO;
 import uz.universes.mongodb.dto.PostCreateDto;
 import uz.universes.mongodb.entity.Post;
 import uz.universes.mongodb.repository.PostRepository;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
-    private final CacheManager cacheManager;
-    private final Cache cache;
 
-    public PostServiceImpl(PostRepository postRepository, CacheManager cacheManager) {
+    public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.cacheManager = cacheManager;
-        this.cache=cacheManager.getCache("post");
     }
 
     @Override
@@ -38,14 +37,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @SneakyThrows
+    @Cacheable(value = "posts",key = "#id")
     public Post getPostId(Integer id){
-        Post cachedPost=cache.get(id, Post.class);
-        if (cachedPost!=null) {
-        return cachedPost;
-        }
             Post post = postRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Post Not Found"));
-        cache.put(id,post);
             TimeUnit.SECONDS.sleep(5);
 
             return post;
@@ -53,17 +48,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @CacheEvict(value = "posts",key = "#id")
     public void delete(Integer id) {
         postRepository.deleteById(id);
-        cache.evict(id);
     }
 
     @Override
-    public void updatePost(UpdatePostDTO dto) {
+    @CachePut(value = "posts",key = "#dto.id")
+    public Post updatePost(UpdatePostDTO dto) {
         Post post = getPostId(dto.getId());
         post.setTitle(dto.getTitle());
         post.setBody(dto.getBody());
-        cache.put(dto.getId(),post);
         postRepository.save(post);
+        return post;
+    }
+
+    @Override
+    @Cacheable(value = "posts",key = "#root.methodName")
+    public List<Post> getAll() {
+        return postRepository.findAll();
     }
 }

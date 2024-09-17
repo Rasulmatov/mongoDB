@@ -5,6 +5,8 @@ import uz.universes.mongodb.dto.UpdatePostDTO;
 import uz.universes.mongodb.dto.PostCreateDto;
 import uz.universes.mongodb.entity.Post;
 
+import java.util.List;
+
 public interface PostService {
     Post create(@NonNull PostCreateDto dto);
 
@@ -12,5 +14,7 @@ public interface PostService {
 
     void delete(Integer id);
 
-    void updatePost(UpdatePostDTO dto);
+    Post updatePost(UpdatePostDTO dto);
+
+    List<Post> getAll();
 }
