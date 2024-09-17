@@ -39,11 +39,11 @@ public class MongodbApplication {
         });
     }
 
-   /* public CacheManager cacheManager(){
+    public CacheManager cacheManager(){
         ConcurrentMapCacheManager cacheManager=new ConcurrentMapCacheManager();
-        cacheManager.setCacheNames(Collections.singleton("posts"));
+        cacheManager.setCacheNames(List.of("post","user"));
         return cacheManager;
-    }*/
+    }
 
 
 }
