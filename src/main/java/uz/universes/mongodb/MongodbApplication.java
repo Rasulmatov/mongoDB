@@ -1,46 +1,49 @@
 package uz.universes.mongodb;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import uz.universes.mongodb.service.CasheService;
-import uz.universes.mongodb.service.mail.MailSenderService;
-import uz.universes.mongodb.service.mail.MailSenderServiceImpl;
+import uz.universes.mongodb.entity.Post;
+import uz.universes.mongodb.repository.PostRepository;
 
-import java.time.Duration;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 
 
 @SpringBootApplication
-@EnableAsync
-@EnableScheduling
 @Slf4j
 @RequiredArgsConstructor
+@EnableCaching
 public class MongodbApplication {
-    private final CasheService casheService;
-    private final MailSenderService mailSenderService;
+    private final PostRepository postRepository;
     public static void main(String[] args) {
         SpringApplication.run(MongodbApplication.class,args);
     }
 
-    @Scheduled(initialDelay = 5,fixedDelay = 60,timeUnit = TimeUnit.SECONDS)
-    public void sendCashedVerificationMails(){
-        if (mailSenderService.isSMTPActive()) {
-            ConcurrentHashMap<Object, Map<Object, Object>> cashe = casheService.getCashe();
-            cashe.forEach((k, value) -> {
-                mailSenderService.sendVerificationMail(value);
-                cashe.remove(k);
+    @Bean
+    public ApplicationRunner applicationRunner(ObjectMapper objectMapper){
+        return (args -> {
+            List<Post> posts=objectMapper.readValue(new URL("https://jsonplaceholder.typicode.com/posts"), new TypeReference<>() {
             });
-        } else {
-            log.info("SMTP Dervice Off");
-        }
+            postRepository.saveAll(posts);
+        });
     }
+
+   /* public CacheManager cacheManager(){
+        ConcurrentMapCacheManager cacheManager=new ConcurrentMapCacheManager();
+        cacheManager.setCacheNames(Collections.singleton("posts"));
+        return cacheManager;
+    }*/
+
 
 }
