@@ -22,11 +22,12 @@ public class MemCachedConfig {
         return new XMemcachedClientBuilder("localhost:11211").build();
     }
 
-    @Bean
+  /*  @Bean
     public CacheManager cacheManager(MemcachedClient memcachedClient) {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
         Cache cache=new ConcurrentMapCache("student");
         cacheManager.setCaches(Collections.singleton(cache));
         return cacheManager;
-    }
+    }*/
+    //ruchnoy qolda ishlash uchun
 }
