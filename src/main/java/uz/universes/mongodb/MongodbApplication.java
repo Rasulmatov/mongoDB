@@ -43,11 +43,5 @@ public class MongodbApplication {
         });
     }
 
-    @CacheEvict(value = "posts",allEntries = true)
-    @Scheduled(initialDelay = 10,fixedDelay = 20,timeUnit = TimeUnit.SECONDS)
-    public void cacheClearAll(){
-        log.info("Clear RAM POST CLEAR");
-    }
-
 
 }
