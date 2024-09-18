@@ -7,20 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-import uz.universes.mongodb.entity.Post;
-import uz.universes.mongodb.repository.PostRepository;
+import uz.universes.mongodb.entity.Student;
+import uz.universes.mongodb.repository.StudentRepository;
 
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 @SpringBootApplication
@@ -29,17 +23,17 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 @EnableScheduling
 public class MongodbApplication {
-    private final PostRepository postRepository;
+    private final StudentRepository studentRepository;
     public static void main(String[] args) {
         SpringApplication.run(MongodbApplication.class,args);
     }
 
     @Bean
-    public ApplicationRunner applicationRunner(ObjectMapper objectMapper){
+    public ApplicationRunner applicationRunners(ObjectMapper objectMapper){
         return (args -> {
-            List<Post> posts=objectMapper.readValue(new URL("https://jsonplaceholder.typicode.com/posts"), new TypeReference<>() {
+            List<Student> posts=objectMapper.readValue(new URL("https://freetestapi.com/api/v1/students"), new TypeReference<>() {
             });
-            postRepository.saveAll(posts);
+            studentRepository.saveAll(posts);
         });
     }
 
