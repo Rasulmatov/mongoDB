@@ -5,7 +5,6 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
-import java.awt.*;
 import java.time.Duration;
 import java.util.logging.Logger;
 
