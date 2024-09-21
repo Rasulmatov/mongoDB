@@ -11,12 +11,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import uz.universes.mongodb.entity.Post;
-import uz.universes.mongodb.repository.PostRepository;
 
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -25,25 +21,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableCaching
 public class MongodbApplication {
-    private final PostRepository postRepository;
     public static void main(String[] args) {
         SpringApplication.run(MongodbApplication.class,args);
     }
 
-    @Bean
-    public ApplicationRunner applicationRunner(ObjectMapper objectMapper){
-        return (args -> {
-            List<Post> posts=objectMapper.readValue(new URL("https://jsonplaceholder.typicode.com/posts"), new TypeReference<>() {
-            });
-            postRepository.saveAll(posts);
-        });
-    }
-
-    public CacheManager cacheManager(){
-        ConcurrentMapCacheManager cacheManager=new ConcurrentMapCacheManager();
-        cacheManager.setCacheNames(List.of("post","user"));
-        return cacheManager;
-    }
 
 
 }
