@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import uz.universes.mongodb.entity.Post;
 import uz.universes.mongodb.entity.User;
-import uz.universes.mongodb.enums.Reting;
+import uz.universes.mongodb.enums.Rating;
 import uz.universes.mongodb.repository.PostRepository;
 import uz.universes.mongodb.repository.UserRepository;
 
@@ -26,10 +26,10 @@ public class MongodbApplication {
             User myUka=new User(2,"Abdulloh","Rasulmatov");
             userRepository.saveAllAndFlush(Arrays.asList(my,myUka));
             var posts= List.of(
-                    new Post(1,"Learn GraphQL 1","11111", Reting.FIVE_STARS,my),
-                    new Post(2,"Learn GraphQL 22 ","22222" ,Reting.FOUR_STARS,my),
-                    new Post(3,"Learn GraphQL 33","33333" ,Reting.THREE_STARS,myUka),
-                    new Post(4,"Learn GraphQL 44", "444444",Reting.TWO_STARS,myUka)
+                    new Post(1,"Learn GraphQL 1","11111", Rating.FIVE_STARS,my),
+                    new Post(2,"Learn GraphQL 22 ","22222" , Rating.FOUR_STARS,my),
+                    new Post(3,"Learn GraphQL 33","33333" , Rating.THREE_STARS,myUka),
+                    new Post(4,"Learn GraphQL 44", "444444", Rating.TWO_STARS,myUka)
             );
             postRepository.saveAll(posts);
         };

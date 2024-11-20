@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:~testdb
+    url: jdbc:h2:mem:~
     username: sa
     password: sa
   jpa:
@@ -14,6 +14,11 @@ spring:
       console:
         enabled: true
         path: /h2-console
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+      endpoint: /graphql
 logging:
   level:
     org.jline: DEBUG   # Bu to'g'ri formatda

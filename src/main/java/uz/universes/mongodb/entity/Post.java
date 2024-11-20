@@ -2,7 +2,7 @@ package uz.universes.mongodb.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import uz.universes.mongodb.enums.Reting;
+import uz.universes.mongodb.enums.Rating;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class Post {
     private Integer id;
     private String title;
     private String body;
-    private Reting reting;
+    private Rating rating;
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 }
