@@ -53,6 +53,7 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(id);
     }
 
+    //barcha postslarni olish
     @Override
     @CachePut(value = "posts",key = "#dto.id")
     public Post updatePost(UpdatePostDTO dto) {
